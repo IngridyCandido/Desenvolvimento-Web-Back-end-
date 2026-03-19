@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel de Estudos</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div id="app" class="container">
+      <header class="hero">
+        <p class="tag">Revisão Frontend</p>
+        <h1>{{ titulo }}</h1>
+        <p>{{ descricao }}</p>
+      </header>
+
+      <section class="card">
+        <h2>Nova tarefa</h2>
+
+        <form @submit.prevent="adicionarTarefa" class="formulario">
+          <input
+            v-model="novaTarefa"
+            type="text"
+            placeholder="Ex.: Revisar estrutura basica do HTML"
+          >
+
+          <select v-model="categoria">
+            <option value="HTML">HTML</option>
+            <option value="CSS">CSS</option>
+            <option value="JavaScript">JavaScript</option>
+            <option value="Vue">Vue</option>
+          </select>
+
+          <button type="submit">Adicionar</button>
+        </form>
+      </section>
+
+      <section class="card">
+        <div class="barra">
+          <h2>Minhas tarefas</h2>
+
+          <select v-model="filtro">
+            <option value="Todas">Todas</option>
+            <option value="Pendentes">Pendentes</option>
+            <option value="Concluidas">Concluidas</option>
+          </select>
+        </div>
+
+        <p v-if="tarefasFiltradas.length === 0" class="vazio">
+          Nenhuma tarefa encontrada para esse filtro.
+        </p>
+
+        <ul class="lista" v-else>
+          <li
+            v-for="tarefa in tarefasFiltradas"
+            :key="tarefa.id"
+            class="item"
+            :class="{ concluida: tarefa.concluida }"
+          >
+            <div>
+              <strong>{{ tarefa.texto }}</strong>
+              <span>{{ tarefa.categoria }}</span>
+            </div>
+
+            <button @click="alternarStatus(tarefa.id)">
+              {{ tarefa.concluida ? 'Reabrir' : 'Concluir' }}
+            </button>
+          </li>
+        </ul>
+      </section>
+    </div>
+
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script src="app.js"></script>
+  </body>
+</html>
